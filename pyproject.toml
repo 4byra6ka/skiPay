@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "skipay"
+version = "0.1.0"
+description = ""
+authors = ["Andrey Grishanov <gau@1jz.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
