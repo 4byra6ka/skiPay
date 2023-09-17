@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+{% include 'main/includes/head.html' %}
+<body>
+{% include 'main/includes/nav.html' %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
+            <div class="offcanvas-lg offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu"
+                 aria-labelledby="sidebarMenuLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="sidebarMenuLabel">SkiChimp</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
+                               href="{% url 'main:main' %}">
+                                <img class="icon" width="25" height="25" src="{% static 'home.png' %}" alt="skiPay">
+                                Панель
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'main:main' %}">
+                                <img class="icon" width="25" height="25" src="{% static 'node.png' %}" alt="skiPay">
+                                Публикации
+                            </a>
+                        </li>
+                        <hr class="my-3">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2"
+                                   href="{% url 'main:main' %}">
+                                    <img class="icon" width="25" height="25" src="{% static 'my_publications.png' %}"
+                                         alt="skiPay">
+                                    Мои публикации
+                                </a>
+                            </li>
+                            {% if not user.is_staff or user.is_superuser %}
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center gap-2"
+                                       href="{% url 'main:main' %}">
+                                        <img class="icon" width="25" height="25"
+                                             src="{% static 'pay_publications.png' %}" alt="skiPay">
+                                        Купленные подписки
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:profile' %}">
+                                    <img class="icon" width="25" height="25" src="{% static 'edit_profile.png' %}"
+                                         alt="skiPay">
+                                    Редактирование профиля
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:logout' %}">
+                                    <img class="icon" width="25" height="25" src="{% static 'logout.png' %}"
+                                         alt="skiPay">
+                                    Выйти из профиля <br> {{ user.phone }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:register' %}">
+                                    <img class="icon" width="25" height="25" src="{% static 'registration.png' %}"
+                                         alt="skiPay">
+                                    Регистрация
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="{% url 'users:login' %}">
+                                    <img class="icon" width="25" height="25" src="{% static 'login.png' %}"
+                                         alt="skiPay">
+                                    Войти в профиль
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+</html>
