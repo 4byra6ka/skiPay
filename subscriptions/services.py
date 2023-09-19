@@ -28,8 +28,8 @@ def retrieve_session(session_id):
     return response.json()
 
 
-def expire_session(session_id):
-    """Завершить сеанс оплаты"""
+def task_retrieve_session():
+    """Задание обработка сеанс оплаты"""
     headers = {'Authorization': f'Bearer {STRIPE_API_KEY}'}
     response = requests.post(f'https://api.stripe.com/v1/checkout/sessions/{session_id}/expire', headers=headers)
     return response.json()

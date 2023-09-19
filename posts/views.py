@@ -18,7 +18,7 @@ from datetime import datetime
 from django.utils import timezone
 
 from subscriptions.models import Subscriptions
-from subscriptions.services import create_session
+from subscriptions.services import create_session, retrieve_session
 
 
 # from skysend.services import datetime_send_next, cron_send_mail, one_send_mail
@@ -59,6 +59,15 @@ class PostPayRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         post = get_object_or_404(Posts, pk=kwargs['pk'])
+        subscription = Subscriptions.objects.filter(user=self.request.user)
+        if subscription.filter(post=post, pay_status='complete'):
+            return reverse_lazy("posts:free_posts_detail", kwargs={'pk': self.object.pk})
+        elif subscription.filter(post=post, pay_status='open'):
+            sub_retrieve_session = retrieve_session(subscription.get(post=post, pay_status='open').session_id)
+            if sub_retrieve_session['status'] == 'complete':
+                subscription.get(post=post, pay_status='open').payment_status = sub_retrieve_session['payment_status']
+
+            return subscription.get(post=post, pay_status='open').url_pay
         if post.paid_published:
             success_url = f'http://{get_current_site(self.request)}{reverse_lazy("subscriptions:list")}'
             pay_session = create_session(success_url, f'Публикация: {post.title}', post.cost*100)
