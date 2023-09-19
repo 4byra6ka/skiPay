@@ -21,6 +21,16 @@
                         {{ object.count_views }}
                     </div>
                     <p class="lead text-wrap">{{ object.content }}</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                        <a type="button" class="btn btn-outline-warning btn-lg px-4 me-md-2"
+                           href="{% url 'posts:my_posts_update' object.pk %}">
+                            Изменить
+                        </a>
+                        <a type="button" class="btn  btn-outline-danger btn-lg px-4"
+                           href="{% url 'posts:my_posts_delete' object.pk %}">
+                            Удалить
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

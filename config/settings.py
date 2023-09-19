@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -140,3 +140,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/users/'
+
+STRIPE_API_KEY = 'sk_test_51NXdGaBOLTQ0FqcxwLU5nAiMxEkkXtN5sjhKr3VX7zVufcio9x4zAqJiLj3Nhg9QR6gqCapiL7oO2gSHFrsGRR8T00Kw5EBEr4'

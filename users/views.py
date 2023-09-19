@@ -1,11 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import login
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, FormView, CreateView
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 from users.forms import UserRegisterForm, UserProfileForm, UserLoginForm
 from users.models import User
+from posts.models import Posts
 
 
 class CustomLoginView(FormView):
@@ -27,6 +31,13 @@ class CustomLoginView(FormView):
                 user = User.objects.get(phone=phone)
                 if user.check_password(password):
                     login(self.request, user)
+                    perm_post = Permission.objects.filter(content_type=ContentType.objects.get_for_model(Posts))
+                    user.user_permissions.add(perm_post.get(codename='add_posts'))
+                    user.user_permissions.add(perm_post.get(codename='view_posts'))
+                    user.user_permissions.add(perm_post.get(codename='change_posts'))
+                    user.user_permissions.add(perm_post.get(codename='delete_posts'))
+                    if self.request.GET.get('next', '') != '':
+                        return HttpResponseRedirect(self.request.GET.get('next', ''))
                     return redirect('main:main')
                 else:
                     messages.add_message(self.request, messages.WARNING, 'Неправильный номер телефона или пароль')

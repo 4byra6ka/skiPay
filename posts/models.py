@@ -16,12 +16,13 @@ class Posts(models.Model):
     paid_published = models.BooleanField(verbose_name='Платная публикация', default=False)
     cost = models.IntegerField(verbose_name='Цена подписки', default=0)
     count_views = models.IntegerField(verbose_name='Количество просмотров', default=0)
+    count_pay = models.IntegerField(verbose_name='Количество покупок', default=0)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blog:blog', args=[str(self.id)])
+        return reverse('posts:posts', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Пост'

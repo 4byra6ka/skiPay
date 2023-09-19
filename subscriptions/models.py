@@ -8,7 +8,10 @@ from users.models import NULLABLE
 class Subscriptions(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE)
     post = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    pay_status = models.BooleanField(verbose_name='Статус оплаты')
+    session_id = models.CharField(max_length=255, verbose_name='id сессии stripe')
+    url_pay = models.TextField(verbose_name='Ссылка оплаты')
+    payment_status = models.CharField(max_length=100, verbose_name='Статус оплаты')
+    status_pay = models.BooleanField(verbose_name='Статус')
 
     def __str__(self):
         return f'{self.user}:{self.post}'

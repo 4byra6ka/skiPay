@@ -24,7 +24,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'main:main' %}">
+                            <a class="nav-link d-flex align-items-center gap-2" href="{% url 'posts:posts' %}">
                                 <img class="icon" width="25" height="25" src="{% static 'node.png' %}" alt="skiPay">
                                 Публикации
                             </a>
@@ -33,7 +33,7 @@
                         {% if user.is_authenticated %}
                             <li class="nav-item">
                                 <a class="nav-link d-flex align-items-center gap-2"
-                                   href="{% url 'main:main' %}">
+                                   href="{% url 'posts:my_posts' %}">
                                     <img class="icon" width="25" height="25" src="{% static 'my_publications.png' %}"
                                          alt="skiPay">
                                     Мои публикации
