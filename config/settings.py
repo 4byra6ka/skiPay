@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'main.apps.MainConfig',
     'posts.apps.PostsConfig',
+    'subscriptions.apps.SubscriptionsConfig',
 
 ]
 

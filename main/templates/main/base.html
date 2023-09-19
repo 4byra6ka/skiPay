@@ -42,10 +42,10 @@
                             {% if not user.is_staff or user.is_superuser %}
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center gap-2"
-                                       href="{% url 'main:main' %}">
+                                       href="{% url 'subscriptions:list' %}">
                                         <img class="icon" width="25" height="25"
                                              src="{% static 'pay_publications.png' %}" alt="skiPay">
-                                        Купленные подписки
+                                        Купленные подписки <br> Оплаты
                                     </a>
                                 </li>
                             {% endif %}

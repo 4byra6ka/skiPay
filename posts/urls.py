@@ -15,5 +15,4 @@ urlpatterns = [
     path("mylist/<int:pk>/", PostMyDetailView.as_view(), name="my_posts_detail"),
     path("mylist/<int:pk>/update/", PostMyUpdateView.as_view(), name="my_posts_update"),
     path("mylist/<int:pk>/delete/", PostMyDeleteView.as_view(), name="my_posts_delete"),
-    # path('mylist/<int:pk>/is_active/', change_is_active, name='change_is_active')
 ]

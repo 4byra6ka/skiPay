@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
@@ -54,12 +55,11 @@ class PostFreeDetailView(DetailView):
 
 class PostPayRedirectView(LoginRequiredMixin, RedirectView):
     """Детали платной публичной публикации"""
-    # model = Posts
-    # template_name = 'posts/posts_detail.html'
 
     def get_redirect_url(self, *args, **kwargs):
         post = get_object_or_404(Posts, pk=kwargs['pk'])
         if post.paid_published:
+            f'http://{get_current_site(self.request)}{reverse_lazy("subscriptions:list")}'
             a = create_session()
         return a['url']
 
