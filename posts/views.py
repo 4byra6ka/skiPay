@@ -17,6 +17,7 @@ from posts.models import Posts
 from datetime import datetime
 from django.utils import timezone
 
+from subscriptions.models import Subscriptions
 from subscriptions.services import create_session
 
 
@@ -59,22 +60,18 @@ class PostPayRedirectView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         post = get_object_or_404(Posts, pk=kwargs['pk'])
         if post.paid_published:
-            f'http://{get_current_site(self.request)}{reverse_lazy("subscriptions:list")}'
-            a = create_session()
-        return a['url']
-
-    def get_context_data(self, *args, **kwargs):
-        a = create_session()
-        # return HttpResponseRedirect(a['url'])
-        return redirect('https://ya.ru')
-        # RedirectView.as_view(url=a['url'])
-        pass
-        context = super().get_context_data(*args, **kwargs)
-        context['title'] = context['object']
-        posts = Posts.objects.get(pk=self.object.pk)
-        posts.count_views += 1
-        posts.save()
-        return context
+            success_url = f'http://{get_current_site(self.request)}{reverse_lazy("subscriptions:list")}'
+            pay_session = create_session(success_url, f'Публикация: {post.title}', post.cost*100)
+            Subscriptions.objects.create(
+                user=self.request.user,
+                post=post,
+                session_id=pay_session['id'],
+                url_pay=pay_session['url'],
+                payment_status=pay_session['payment_status'],
+                pay_status=pay_session['status'],
+            )
+            return pay_session['url']
+        return reverse_lazy("posts:posts")
 
 
 class PostMyListView(PermissionRequiredMixin, ListView):
