@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404
 
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, RedirectView
 
 from posts.forms import AddPostMyForm, UpdatePostMyForm
 # from skysend.forms import MailingSettingsForm, MailingClientForm, MailingMessageForm
@@ -14,6 +15,9 @@ from posts.models import Posts
 
 from datetime import datetime
 from django.utils import timezone
+
+from subscriptions.services import create_session
+
 
 # from skysend.services import datetime_send_next, cron_send_mail, one_send_mail
 
@@ -48,13 +52,23 @@ class PostFreeDetailView(DetailView):
         return context
 
 
-class PostPayDetailView(LoginRequiredMixin, DetailView):
+class PostPayRedirectView(LoginRequiredMixin, RedirectView):
     """Детали платной публичной публикации"""
-    model = Posts
-    template_name = 'posts/posts_detail.html'
+    # model = Posts
+    # template_name = 'posts/posts_detail.html'
+
+    def get_redirect_url(self, *args, **kwargs):
+        post = get_object_or_404(Posts, pk=kwargs['pk'])
+        if post.paid_published:
+            a = create_session()
+        return a['url']
 
     def get_context_data(self, *args, **kwargs):
-
+        a = create_session()
+        # return HttpResponseRedirect(a['url'])
+        return redirect('https://ya.ru')
+        # RedirectView.as_view(url=a['url'])
+        pass
         context = super().get_context_data(*args, **kwargs)
         context['title'] = context['object']
         posts = Posts.objects.get(pk=self.object.pk)

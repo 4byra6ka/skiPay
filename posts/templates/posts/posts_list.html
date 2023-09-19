@@ -35,7 +35,7 @@
                         <td>{{ object.count_pay }}</td>
                         <td>{{ object.create_date }}</td>
                         {% if object.paid_published %}
-                            <td><a class="btn btn-primary " href="{% url 'posts:pay_posts_detail' object.pk %}"
+                            <td><a class="btn btn-primary " href="{% url 'posts:pay_posts_redirect' object.pk %}"
                                    role="button"
                                    style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Купить</a>
                                 {% else %}
