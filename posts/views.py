@@ -25,7 +25,13 @@ class PostListView(ListView):
         context = super().get_context_data(*args, **kwargs)
         context['object_list'] = Posts.objects.filter(is_published=True)
         if self.request.user.is_authenticated:
-            context['sub_list'] = Posts.objects.filter(is_published=True, subscriptions__user=self.request.user, subscriptions__pay_status='complete')
+            context['sub_read_list'] = Posts.objects.filter(is_published=True, subscriptions__user=self.request.user,
+                                                            subscriptions__pay_status='complete')
+            context['sub_pay_list'] = Posts.objects.filter(is_published=True, paid_published=True).exclude(
+                subscriptions__user=self.request.user, subscriptions__pay_status='complete')
+            context['sub_pay_open_list'] = Posts.objects.filter(is_published=True, paid_published=True,
+                                                                subscriptions__user=self.request.user,
+                                                                subscriptions__pay_status='open')
         return context
 
 
@@ -42,7 +48,8 @@ class PostDetailView(DetailView):
             post.count_views += 1
             post.save()
             return context
-        if Subscriptions.objects.filter(user=self.request.user, post=post, pay_status='complete') or self.object.owner == self.request.user:
+        if Subscriptions.objects.filter(user=self.request.user, post=post,
+                                        pay_status='complete') or self.object.owner == self.request.user:
             context = super().get_context_data(*args, **kwargs)
             context['title'] = context['object']
             post.count_views += 1
@@ -50,7 +57,6 @@ class PostDetailView(DetailView):
             return context
         if self.object.paid_published:
             raise PermissionDenied()
-
 
 
 class PostPayRedirectView(LoginRequiredMixin, RedirectView):
@@ -75,7 +81,7 @@ class PostPayRedirectView(LoginRequiredMixin, RedirectView):
             return subscription.get(post=post, pay_status='open').url_pay
         if post.paid_published:
             success_url = f'http://{get_current_site(self.request)}{reverse_lazy("subscriptions:list")}'
-            pay_session = create_session(success_url, f'Публикация: {post.title}', post.cost*100)
+            pay_session = create_session(success_url, f'Публикация: {post.title}', post.cost * 100)
             Subscriptions.objects.create(
                 user=self.request.user,
                 post=post,

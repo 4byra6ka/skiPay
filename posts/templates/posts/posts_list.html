@@ -34,32 +34,38 @@
                         </td>
                         <td>{{ object.count_views }}</td>
                         <td>{{ object.create_date }}</td>
-                        {% if object.paid_published and object.owner != user and user.is_authenticated%}
-                            {% for sub in sub_list.all %}
+                        {% if object.paid_published and object.owner != user and user.is_authenticated %}
+                            {% for sub in sub_read_list.all %}
                                 {% if object == sub %}
                                     <td><a class="btn btn-success " href="{% url 'posts:posts_detail' object.pk %}"
                                            role="button"
                                            style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Читать</a>
                                     </td>
-                                {% else %}
+                                {% endif %}
+                            {% endfor %}
+                            {% for sub in sub_pay_list.all %}
+                                {% if object == sub %}
                                     <td><a class="btn btn-primary "
                                            href="{% url 'posts:pay_posts_redirect' object.pk %}"
                                            role="button"
                                            style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Купить</a>
                                     </td>
                                 {% endif %}
-                            {% empty %}
-                                <td><a class="btn btn-primary "
-                                       href="{% url 'posts:pay_posts_redirect' object.pk %}"
-                                       role="button"
-                                       style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Купить</a>
-                                </td>
+                            {% endfor %}
+                            {% for sub in sub_pay_open_list.all %}
+                                {% if object == sub %}
+                                    <td><a class="btn btn-primary "
+                                           href="{% url 'posts:pay_posts_redirect' object.pk %}"
+                                           role="button"
+                                           style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Купить</a>
+                                    </td>
+                                {% endif %}
                             {% endfor %}
                         {% elif object.paid_published and user.is_anonymous %}
                             <td><a class="btn btn-primary "
                                    href="{% url 'posts:pay_posts_redirect' object.pk %}"
                                    role="button"
-                                   style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Купить </a>
+                                   style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Купить</a>
                             </td>
                         {% else %}
                             <td><a class="btn btn-success " href="{% url 'posts:posts_detail' object.pk %}"
