@@ -1,28 +1,16 @@
-from django.conf import settings
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied
-from django.forms import inlineformset_factory
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404
 
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, RedirectView
 
 from posts.forms import AddPostMyForm, UpdatePostMyForm
-# from skysend.forms import MailingSettingsForm, MailingClientForm, MailingMessageForm
 from posts.models import Posts
-
-from datetime import datetime
-from django.utils import timezone
 
 from subscriptions.models import Subscriptions
 from subscriptions.services import create_session, retrieve_session
-from subscriptions.tasks import task_retrieve_session
-
-
-# from skysend.services import datetime_send_next, cron_send_mail, one_send_mail
 
 
 class PostListView(ListView):
@@ -36,6 +24,8 @@ class PostListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['object_list'] = Posts.objects.filter(is_published=True)
+        if self.request.user.is_authenticated:
+            context['sub_list'] = Posts.objects.filter(is_published=True, subscriptions__user=self.request.user, subscriptions__pay_status='complete')
         return context
 
 
@@ -46,7 +36,13 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         post = Posts.objects.get(pk=self.object.pk)
-        if Subscriptions.objects.filter(user=self.request.user, post=post, pay_status='complete') or not self.object.paid_published:
+        if not self.object.paid_published:
+            context = super().get_context_data(*args, **kwargs)
+            context['title'] = context['object']
+            post.count_views += 1
+            post.save()
+            return context
+        if Subscriptions.objects.filter(user=self.request.user, post=post, pay_status='complete') or self.object.owner == self.request.user:
             context = super().get_context_data(*args, **kwargs)
             context['title'] = context['object']
             post.count_views += 1
