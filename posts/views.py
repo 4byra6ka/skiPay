@@ -19,6 +19,7 @@ from django.utils import timezone
 
 from subscriptions.models import Subscriptions
 from subscriptions.services import create_session, retrieve_session
+from subscriptions.tasks import task_retrieve_session
 
 
 # from skysend.services import datetime_send_next, cron_send_mail, one_send_mail
@@ -38,20 +39,22 @@ class PostListView(ListView):
         return context
 
 
-class PostFreeDetailView(DetailView):
+class PostDetailView(DetailView):
     """Детали бесплатной публичной публикации"""
     model = Posts
     template_name = 'posts/posts_detail.html'
 
     def get_context_data(self, *args, **kwargs):
+        post = Posts.objects.get(pk=self.object.pk)
+        if Subscriptions.objects.filter(user=self.request.user, post=post, pay_status='complete') or not self.object.paid_published:
+            context = super().get_context_data(*args, **kwargs)
+            context['title'] = context['object']
+            post.count_views += 1
+            post.save()
+            return context
         if self.object.paid_published:
             raise PermissionDenied()
-        context = super().get_context_data(*args, **kwargs)
-        context['title'] = context['object']
-        posts = Posts.objects.get(pk=self.object.pk)
-        posts.count_views += 1
-        posts.save()
-        return context
+
 
 
 class PostPayRedirectView(LoginRequiredMixin, RedirectView):
@@ -61,12 +64,18 @@ class PostPayRedirectView(LoginRequiredMixin, RedirectView):
         post = get_object_or_404(Posts, pk=kwargs['pk'])
         subscription = Subscriptions.objects.filter(user=self.request.user)
         if subscription.filter(post=post, pay_status='complete'):
-            return reverse_lazy("posts:free_posts_detail", kwargs={'pk': self.object.pk})
+            return reverse_lazy("posts:posts_detail", kwargs={'pk': post.pk})
         elif subscription.filter(post=post, pay_status='open'):
             sub_retrieve_session = retrieve_session(subscription.get(post=post, pay_status='open').session_id)
             if sub_retrieve_session['status'] == 'complete':
-                subscription.get(post=post, pay_status='open').payment_status = sub_retrieve_session['payment_status']
-
+                subscription_post = subscription.get(post=post, pay_status='open')
+                subscription_post.payment_status = sub_retrieve_session['payment_status']
+                subscription_post.pay_status = sub_retrieve_session['status']
+                subscription_post.post.count_pay = subscription_post.post.count_pay + 1
+                subscription_post.post.save()
+                subscription_post.save()
+                # task_retrieve_session.delay()
+                return reverse_lazy("posts:posts_detail", kwargs={'pk': post.pk})
             return subscription.get(post=post, pay_status='open').url_pay
         if post.paid_published:
             success_url = f'http://{get_current_site(self.request)}{reverse_lazy("subscriptions:list")}'

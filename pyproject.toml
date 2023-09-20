@@ -11,6 +11,11 @@ django = "^4.2.5"
 python-dotenv = "^1.0.0"
 pillow = "^10.0.1"
 requests = "^2.31.0"
+redis = "^5.0.0"
+celery = "^5.3.4"
+psycopg2-binary = "^2.9.7"
+django-celery-beat = "^2.5.0"
+flake8 = "^6.1.0"
 
 
 [build-system]

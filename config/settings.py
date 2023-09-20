@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-kjzp*$r^8#@98@dw55o!v_!*7i3$z$g$*+q(1h0viurq#^t8cx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'posts.apps.PostsConfig',
     'subscriptions.apps.SubscriptionsConfig',
+    'django_celery_beat',
 
 ]
 
@@ -112,9 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = os.getenv('LANGUAGE_CODE')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.getenv('TIME_ZONE')
 
 USE_I18N = True
 
@@ -144,3 +145,9 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/users/'
 
 STRIPE_API_KEY = 'sk_test_51NXdGaBOLTQ0FqcxwLU5nAiMxEkkXtN5sjhKr3VX7zVufcio9x4zAqJiLj3Nhg9QR6gqCapiL7oO2gSHFrsGRR8T00Kw5EBEr4'
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_TIMEZONE = os.getenv('TIME_ZONE')
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60

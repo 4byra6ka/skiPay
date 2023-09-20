@@ -14,7 +14,7 @@
                     <th scope="col">Заголовок</th>
                     <th scope="col">Оплата</th>
                     <th scope="col">Кол-во просмотров</th>
-                    <th scope="col">Кол-во покупок</th>
+{#                    <th scope="col">Кол-во покупок</th>#}
                     <th scope="col">Дата создания</th>
                     <th scope="col"></th>
                 </tr>
@@ -32,14 +32,14 @@
                             {% endif %}
                         </td>
                         <td>{{ object.count_views }}</td>
-                        <td>{{ object.count_pay }}</td>
+{#                        <td>{{ object.count_pay }}</td>#}
                         <td>{{ object.create_date }}</td>
                         {% if object.paid_published %}
                             <td><a class="btn btn-primary " href="{% url 'posts:pay_posts_redirect' object.pk %}"
                                    role="button"
                                    style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Купить</a>
                                 {% else %}
-                            <td><a class="btn btn-success " href="{% url 'posts:free_posts_detail' object.pk %}"
+                            <td><a class="btn btn-success " href="{% url 'posts:posts_detail' object.pk %}"
                                    role="button"
                                    style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Читать</a>
                         {% endif %}
