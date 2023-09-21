@@ -16,6 +16,7 @@ celery = "^5.3.4"
 psycopg2-binary = "^2.9.7"
 django-celery-beat = "^2.5.0"
 flake8 = "^6.1.0"
+coverage = "^7.3.1"
 
 
 [build-system]

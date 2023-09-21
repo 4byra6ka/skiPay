@@ -27,37 +27,34 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            {{ form.non_field_errors }}
+            <span class="text-danger">{{ form.non_field_errors }}</span>
+            <span class="text-danger">{{ form.title.errors }}</span>
             <div class="form-floating pb-3">
-                {{ form.title.errors }}
                 {{ form.title }}
                 <label for="{{ form.title.id_for_label }}">Заголовок</label>
             </div>
-            {{ form.non_field_errors }}
+            <span class="text-danger">{{ form.content.errors }}</span>
             <div class="form-floating pb-3">
-                {{ form.content.errors }}
                 {{ form.content }}
                 <label for="{{ form.content.id_for_label }}">Cодержимое</label>
             </div>
-            {{ form.non_field_errors }}
+            <span class="text-danger">{{ form.image.errors }}</span>
             <div class="input-group pb-3">
-                {{ form.image.errors }}
                 <label class="input-group-text" for="{{ form.image.id_for_label }}">Изображение</label>
                 {{ form.image }}
             </div>
-            {{ form.non_field_errors }}
+            <span class="text-danger">{{ form.is_published.errors }}</span>
             <div class="form-check pb-3">
-                {{ form.is_published.errors }}
                 {{ form.is_published }}
                 <label class="form-check-label" for="{{ form.is_published.id_for_label }}">Признак публикации</label>
             </div>
+            <span class="text-danger">{{ form.paid_published.errors }}</span>
             <div class="form-check pb-3">
-                {{ form.paid_published.errors }}
                 {{ form.paid_published }}
                 <label for="{{ form.paid_published.id_for_label }}">Платная публикация</label>
             </div>
+            <span class="text-danger">{{ form.cost.errors }}</span>
             <div class="form-floating pb-3">
-                {{ form.cost.errors }}
                 {{ form.cost }}
                 <label class="form-check-label" for="{{ form.is_published.id_for_label }}">Цена публикации</label>
             </div>
