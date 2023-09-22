@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 
-from django import forms
 from users.models import NULLABLE
 
 
@@ -28,7 +27,7 @@ class Posts(models.Model):
 
     def clean(self) -> None:
         super().clean()
-        if self.cost < 100 :
+        if self.cost < 100:
             raise ValidationError({'cost': 'Цена публикации не может быть ниже 100 рублей.'})
 
     class Meta:

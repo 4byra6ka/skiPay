@@ -30,4 +30,3 @@ class UpdatePostMyForm(forms.ModelForm):
         self.fields["is_published"].widget.attrs.update({"class": "form-check-input"})
         self.fields["paid_published"].widget.attrs.update({"class": "form-check-input"})
         self.fields["cost"].widget.attrs.update({"class": "form-control"})
-

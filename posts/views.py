@@ -28,7 +28,7 @@ class PostListView(ListView):
             context['sub_read_list'] = Posts.objects.filter(is_published=True, subscriptions__user=self.request.user,
                                                             subscriptions__pay_status='complete')
             context['sub_pay_list'] = Posts.objects.filter(is_published=True, paid_published=True).exclude(
-                subscriptions__user=self.request.user, subscriptions__pay_status='complete')
+                subscriptions__user=self.request.user)
             context['sub_pay_open_list'] = Posts.objects.filter(is_published=True, paid_published=True,
                                                                 subscriptions__user=self.request.user,
                                                                 subscriptions__pay_status='open')

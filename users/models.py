@@ -3,7 +3,10 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
-phone_validator = RegexValidator(r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$", "Указанный номер не подходит по формату +7хххххххххх")
+phone_validator = RegexValidator(
+    r"^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$",
+    "Указанный номер не подходит по формату +7хххххххххх"
+)
 
 
 class User(AbstractUser):

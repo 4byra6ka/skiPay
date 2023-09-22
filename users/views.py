@@ -41,10 +41,8 @@ class CustomLoginView(FormView):
                     return redirect('main:main')
                 else:
                     messages.add_message(self.request, messages.WARNING, 'Неправильный номер телефона или пароль')
-            except:
-                messages.add_message(self.request, messages.WARNING, 'Неправильный номер телефона или пароль')
-            else:
-                message = 'Login failed!'
+            except BaseException as err:
+                messages.add_message(self.request, messages.WARNING, f'Неправильный номер телефона или пароль {err}')
         return render(
             self.request, 'users/login.html', context={'form': form})
 

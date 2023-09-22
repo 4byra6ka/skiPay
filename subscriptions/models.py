@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from django.urls import reverse
 
 from posts.models import Posts
 from users.models import NULLABLE
@@ -25,4 +24,3 @@ class Subscriptions(models.Model):
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
         ordering = ['-created_at']
-

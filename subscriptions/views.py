@@ -16,4 +16,3 @@ class SubscriptionsListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(*args, **kwargs)
         context['object_list'] = Subscriptions.objects.filter(user=self.request.user)
         return context
-

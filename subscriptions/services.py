@@ -1,12 +1,12 @@
 import requests
-from requests import Response
 
 from config.settings import STRIPE_API_KEY
 
 
 def create_session(success_url, post_title, post_cost):
     """Создать сеанс оплаты"""
-    images = 'https://files.stripe.com/links/MDB8YWNjdF8xTlhkR2FCT0xUUTBGcWN4fGZsX3Rlc3RfZ3cyendIMmxraFJHQTc2RHNkS1VGS1cy00KnnMohGD'
+    images = ('https://files.stripe.com/links/'
+              'MDB8YWNjdF8xTlhkR2FCT0xUUTBGcWN4fGZsX3Rlc3RfZ3cyendIMmxraFJHQTc2RHNkS1VGS1cy00KnnMohGD')
     headers = {'Authorization': f'Bearer {STRIPE_API_KEY}'}
     data = {
         'mode': 'payment',
