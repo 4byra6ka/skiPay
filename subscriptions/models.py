@@ -17,9 +17,6 @@ class Subscriptions(models.Model):
     def __str__(self):
         return f'{self.user}:{self.post}'
 
-    # def get_absolute_url(self):
-    #     return reverse('blog:blog', args=[str(self.id)])
-
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'

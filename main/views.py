@@ -16,7 +16,7 @@ class MainView(TemplateView):
         context = super().get_context_data(*args, **kwargs)
         count_post = len(Posts.objects.filter(is_published=True))
         if count_post > 0:
-            blog_3_post = random.sample(list(Posts.objects.filter(is_published=True)),
+            blog_6_post = random.sample(list(Posts.objects.filter(is_published=True)),
                                         count_post if count_post < 6 else 6)
-            context['blogs'] = blog_3_post
+            context['blogs'] = blog_6_post
             return context
