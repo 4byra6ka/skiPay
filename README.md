@@ -23,7 +23,7 @@
 ***
 ### Запуск Docker проекта
     git cline https://github.com/4byra6ka/skiPay.git
-    cd CourseWorkModule6
+    cd skiPay
     poetry install
     vi .env
     docker run -d --name redis -p 6379:6379 redis:7.0.5-alpine
