@@ -1,0 +1,59 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="form-signin w-100 m-auto">
+        <form method="post">
+            {% csrf_token %}
+            <img class="mb-4" src="{% static 'registration.png' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if form.phone.errors %}
+                <div class="alert alert-warning">
+                    {{ form.phone.errors }}
+                </div>
+            {% endif %}
+            {% if form.password1.errors %}
+                <div class="alert alert-warning">
+                    {{ form.password1.errors }}
+                </div>
+            {% endif %}
+            {% if form.password2.errors %}
+                <div class="alert alert-warning">
+                    {{ form.password2.errors }}
+                </div>
+            {% endif %}
+            {{ form.non_field_errors }}
+            <div class="form-floating">
+                {{ form.phone }}
+                <label for="{{ form.phone.id_for_label }}">Номер телефона</label>
+            </div>
+            {{ form.non_field_errors }}
+            <div class="form-floating">
+                {{ form.first_name }}
+                <label for="{{ form.first_name.id_for_label }}">Имя</label>
+            </div>
+            {{ form.non_field_errors }}
+            <div class="form-floating">
+                {{ form.last_name }}
+                <label for="{{ form.last_name.id_for_label }}">Фамилия</label>
+            </div>
+            {{ form.non_field_errors }}
+            <div class="form-floating">
+                {{ form.password1 }}
+                <label for="{{ form.password1.id_for_label }}">Пароль</label>
+            </div>
+            {{ form.non_field_errors }}
+            <div class="form-floating">
+                {{ form.password2 }}
+                <label for="{{ form.password2.id_for_label }}">Повторный пароль</label>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="submit">Зарегистрироваться</button>
+        </form>
+    </main>
+{% endblock %}

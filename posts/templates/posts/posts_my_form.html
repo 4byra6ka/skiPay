@@ -1,0 +1,70 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="w-50 m-auto">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if object %}
+                <div class="row">
+                    <div class="col-2">
+                        <img class="mb-4" src="{% static 'edit_post.png' %}" alt="" width="72" height="72">
+                    </div>
+                    <div class="col-10"><h1 class="h3 mb-3 fw-normal">Изменить публикацию</h1></div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-2">
+                        <img class="mb-4" src="{% static 'new_post.png' %}" alt="" width="72" height="72">
+                    </div>
+                    <div class="col-10"><h1 class="h3 mb-3 fw-normal">Новая публикация</h1></div>
+                </div>
+            {% endif %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <span class="text-danger">{{ form.non_field_errors }}</span>
+            <span class="text-danger">{{ form.title.errors }}</span>
+            <div class="form-floating pb-3">
+                {{ form.title }}
+                <label for="{{ form.title.id_for_label }}">Заголовок</label>
+            </div>
+            <span class="text-danger">{{ form.content.errors }}</span>
+            <div class="form-floating pb-3">
+                {{ form.content }}
+                <label for="{{ form.content.id_for_label }}">Cодержимое</label>
+            </div>
+            <span class="text-danger">{{ form.image.errors }}</span>
+            <div class="input-group pb-3">
+                <label class="input-group-text" for="{{ form.image.id_for_label }}">Изображение</label>
+                {{ form.image }}
+            </div>
+            <span class="text-danger">{{ form.is_published.errors }}</span>
+            <div class="form-check pb-3">
+                {{ form.is_published }}
+                <label class="form-check-label" for="{{ form.is_published.id_for_label }}">Признак публикации</label>
+            </div>
+            <span class="text-danger">{{ form.paid_published.errors }}</span>
+            <div class="form-check pb-3">
+                {{ form.paid_published }}
+                <label for="{{ form.paid_published.id_for_label }}">Платная публикация</label>
+            </div>
+            <span class="text-danger">{{ form.cost.errors }}</span>
+            <div class="form-floating pb-3">
+                {{ form.cost }}
+                <label class="form-check-label" for="{{ form.is_published.id_for_label }}">Цена публикации</label>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="submit">
+                {% if object %}
+                    Изменить
+                {% else %}
+                    Создать пост
+                {% endif %}
+            </button>
+        </form>
+    </main>
+{% endblock %}

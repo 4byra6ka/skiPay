@@ -1,0 +1,65 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Мои публикации</h1>
+            <a class="btn btn-outline-warning btn-lg px-4 me-md-2" href="{% url 'posts:my_posts_create' %}">Создать публикацию</a>
+        </div>
+
+        <div class="table-responsive small mt-2">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Публикация</th>
+                    <th scope="col">Заголовок</th>
+                    <th scope="col">Оплата</th>
+                    <th scope="col">Кол-во просмотров</th>
+                    <th scope="col">Кол-во покупок</th>
+                    <th scope="col">Дата создания</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td>{{ object.pk }}</td>
+                        {% if object.is_published %}
+                            <td><span class="badge text-bg-success">Активна</span></td>
+                            <td>{{ object.title|truncatechars:25 }}</td>
+                            <td>
+                                {% if object.paid_published %}
+                                    <img class="icon" width="25" height="25" src="{% static 'pay.png' %}" alt="skiPay">
+                                {% else %}
+                                    <img class="icon" width="25" height="25" src="{% static 'free_pay.png' %}" alt="skiPay">
+                                {% endif %}
+                            </td>
+                            <td>{{ object.count_views }}</td>
+                            <td>{{ object.count_pay }}</td>
+                            <td>{{ object.create_date }}</td>
+                        {% else %}
+                            <td><span class="badge text-bg-danger">Не активна</span></td>
+                            <td><s>{{ object.title|truncatechars:25 }}</s></td>
+                            <td>
+                                {% if object.paid_published %}
+                                    <img class="icon" width="25" height="25" src="{% static 'pay.png' %}" alt="skiPay">
+                                {% else %}
+                                    <img class="icon" width="25" height="25" src="{% static 'free_pay.png' %}" alt="skiPay">
+                                {% endif %}
+                            </td>
+                            <td><s>{{ object.count_views }}</s></td>
+                            <td><s>{{ object.count_pay }}</s></td>
+                            <td><s>{{ object.create_date }}</s></td>
+                        {% endif %}
+                        <td><a class="btn btn-primary " href="{% url 'posts:my_posts_detail' object.pk %}"
+                               role="button"
+                               style="--bs-btn-padding-y: .05rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Посмотреть</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+{% endblock %}

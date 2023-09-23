@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="pt-3 border-bottom">
+            <h2>Публикации</h2>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 h-auto card-group">
+            {% for blog in blogs %}
+                <div class="col-sm-6 ">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-3 shadow-sm h-md-250 position-relative mt-3 card">
+                        <div class="card-header col p-4 d-flex flex-column position-static">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                {% if blog.paid_published %}
+                                    <span class="badge text-bg-info">Pay</span> {{ blog.cost }}₽
+                                {% else %}
+                                    <span class="badge text-bg-success">Free</span>
+                                {% endif %}
+                            </div>
+                            <div class="mb-1 text-body-secondary">
+                                Дата: {{ blog.create_date }} <br>
+                                <img class="icon" width="15" height="15" src="{% static 'view.png' %}" alt="chimp">
+                                {{ blog.count_views }}
+                            </div>
+                        </div>
+                        <div class="card-body col p-4 d-flex flex-column position-static">
+                            <h3 class="mb-0">{{ blog.title }}</h3>
+                        </div>
+                        <div class="card-footer  d-grid gap-2 d-md-flex justify-content-md-start">
+                            {% if blog.paid_published %}
+                                    <a href="{% url 'posts:pay_posts_redirect' blog.pk %}" class="btn btn-outline-primary">
+                                Купить
+                            </a>
+                                {% else %}
+                                    <a href="{% url 'posts:posts_detail' blog.pk %}" class="btn btn-outline-success">
+                                Прочитать
+                            </a>
+                                {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock %}
