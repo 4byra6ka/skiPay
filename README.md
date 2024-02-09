@@ -1,5 +1,6 @@
-# <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f4bb.svg" width="89"/> skiPay
+# <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f4bb.svg" width="89"/>
 
+# skiPay
 ## "Платформа для публикации платного контента"
 
 
